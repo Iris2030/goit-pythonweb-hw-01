@@ -1,46 +1,56 @@
 from abc import ABC, abstractmethod
+import logging
+
+logging.basicConfig(level=logging.INFO)
+
 
 class Vehicle(ABC):
-    def __init__(self, make, model):
+    def __init__(self, make: str, model: str) -> None:
         self.make = make
         self.model = model
 
     @abstractmethod
-    def start_engine(self):
+    def start_engine(self) -> None:
         pass
 
+
 class Car(Vehicle):
-    def start_engine(self):
-        print(f"{self.make} {self.model}: Двигун запущено")
+    def start_engine(self) -> None:
+        logging.info(f"{self.make} {self.model}: Двигун запущено")
+
 
 class Motorcycle(Vehicle):
-    def start_engine(self):
-        print(f"{self.make} {self.model}: Мотор заведено")
+    def start_engine(self) -> None:
+        logging.info(f"{self.make} {self.model}: Мотор заведено")
+
 
 class VehicleFactory(ABC):
     @abstractmethod
-    def create_car(self, make, model):
+    def create_car(self, make: str, model: str) -> Car:
         pass
 
     @abstractmethod
-    def create_motorcycle(self, make, model):
+    def create_motorcycle(self, make: str, model: str) -> Motorcycle:
         pass
 
+
 class USVehicleFactory(VehicleFactory):
-    def create_car(self, make, model):
+    def create_car(self, make: str, model: str) -> Car:
         return Car(f"{make} (US Spec)", model)
 
-    def create_motorcycle(self, make, model):
+    def create_motorcycle(self, make: str, model: str) -> Motorcycle:
         return Motorcycle(f"{make} (US Spec)", model)
 
+
 class EUVehicleFactory(VehicleFactory):
-    def create_car(self, make, model):
+    def create_car(self, make: str, model: str) -> Car:
         return Car(f"{make} (EU Spec)", model)
 
-    def create_motorcycle(self, make, model):
+    def create_motorcycle(self, make: str, model: str) -> Motorcycle:
         return Motorcycle(f"{make} (EU Spec)", model)
 
-# Використання 
+
+# Використання
 us_factory = USVehicleFactory()
 vehicle1 = us_factory.create_car("Ford", "Mustang")
 vehicle1.start_engine()
